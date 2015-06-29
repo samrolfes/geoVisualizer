@@ -36,19 +36,10 @@ renderer.autoClearColor = false;
 				};
 				var onError = function ( xhr ) {
 				};
-				var loader = new THREE.ImageLoader( manager );
-				loader.load( './vanimation_files/random.jpg', function ( image ) {
-					texture.image = image;
-					texture.needsUpdate = true;
-				} );
+				
 				// model
 				var loader = new THREE.OBJLoader( manager );
-				loader.load( './vanimation_files/globmeshtest.OBJ', function ( object ) {
-					object.traverse( function ( child ) {
-						if ( child instanceof THREE.Mesh ) {
-							child.material.map = texture;
-						}
-					} );
+				loader.load( './vanimation_files/globmeshtest.OBJ', function ( object ) );
 					object.position.y = - 80;
 					scene.add( object );
 				}, onProgress, onError );
