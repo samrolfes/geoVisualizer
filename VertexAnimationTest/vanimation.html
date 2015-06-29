@@ -3,7 +3,8 @@
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./vanimation_files/three.js"></script>
 <script src="./vanimation_files/threex.vertexanimation.js"></script>
 </head><body style="margin: 0px; background-color: #bbbbbb; overflow: hidden;"><script>
-	var renderer	= new THREE.WebGLRenderer();
+renderer = new THREE.WebGLRenderer( { preserveDrawingBuffer: true } );
+renderer.autoClearColor = false;
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	document.body.appendChild( renderer.domElement );
 
@@ -14,28 +15,28 @@
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		create an mesh							//
-	//////////////////////////////////////////////////////////////////////////////////	
+	//////////////////////////////////////////////////////////////////////////////////
 	var geometry	= new THREE.TorusKnotGeometry(1-0.25, 0.25, 32*8, 32);
 	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
 	scene.add( mesh );
-	
+
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Do a vertex animation on this mesh				//
 	//////////////////////////////////////////////////////////////////////////////////
-	
+
 	// instanciate the animation object
 	var animation	= new THREEx.VertexAnimation(geometry, function(origin, position, delta, now){
 		// here you put your formula, something clever which fit your needs
 		var angle	= now*2 + position.y	 * 10;
-		position.x	= origin.x + Math.cos(angle)*0.1;	
+		position.x	= origin.x + Math.cos(angle)*0.1;
 	})
 	// update the animation at every frame
 	updateFcts.push(function(delta, now){
 		animation.update(delta, now)
 	})
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Camera Controls							//
 	//////////////////////////////////////////////////////////////////////////////////
@@ -55,9 +56,9 @@
 	//		render the scene						//
 	//////////////////////////////////////////////////////////////////////////////////
 	updateFcts.push(function(){
-		renderer.render( scene, camera );		
+		renderer.render( scene, camera );
 	})
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		loop runner							//
 	//////////////////////////////////////////////////////////////////////////////////
