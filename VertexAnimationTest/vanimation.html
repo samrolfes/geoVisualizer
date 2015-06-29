@@ -2,6 +2,8 @@
 <!-- saved from url=(0073)http://jeromeetienne.github.io/threex.vertexanimation/examples/basic.html -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./vanimation_files/three.js"></script>
 <script src="./vanimation_files/threex.vertexanimation.js"></script>
+<script src="./vanimation_files/OBJLoader.js"></script>
+
 </head><body style="margin: 0px; background-color: #bbbbbb; overflow: hidden;"><script>
 renderer = new THREE.WebGLRenderer( { preserveDrawingBuffer: true } );
 renderer.autoClearColor = false;
@@ -16,10 +18,41 @@ renderer.autoClearColor = false;
 	//////////////////////////////////////////////////////////////////////////////////
 	//		create an mesh							//
 	//////////////////////////////////////////////////////////////////////////////////
-	var geometry	= new THREE.TorusKnotGeometry(1-0.25, 0.25, 32*8, 32);
+	/*var geometry	= new THREE.TorusKnotGeometry(1-0.25, 0.25, 32*8, 32);
 	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
-	scene.add( mesh );
+	scene.add( mesh );*/
+	// texture
+				var manager = new THREE.LoadingManager();
+				manager.onProgress = function ( item, loaded, total ) {
+					console.log( item, loaded, total );
+				};
+				var texture = new THREE.Texture();
+				var onProgress = function ( xhr ) {
+					if ( xhr.lengthComputable ) {
+						var percentComplete = xhr.loaded / xhr.total * 100;
+						console.log( Math.round(percentComplete, 2) + '% downloaded' );
+					}
+				};
+				var onError = function ( xhr ) {
+				};
+				var loader = new THREE.ImageLoader( manager );
+				loader.load( './vanimation_files/random.jpg', function ( image ) {
+					texture.image = image;
+					texture.needsUpdate = true;
+				} );
+				// model
+				var loader = new THREE.OBJLoader( manager );
+				loader.load( './vanimation_files/globmeshtest.OBJ', function ( object ) {
+					object.traverse( function ( child ) {
+						if ( child instanceof THREE.Mesh ) {
+							child.material.map = texture;
+						}
+					} );
+					object.position.y = - 80;
+					scene.add( object );
+				}, onProgress, onError );
+
 
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -27,7 +60,7 @@ renderer.autoClearColor = false;
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// instanciate the animation object
-	var animation	= new THREEx.VertexAnimation(geometry, function(origin, position, delta, now){
+	var animation	= new THREEx.VertexAnimation(object, function(origin, position, delta, now){
 		// here you put your formula, something clever which fit your needs
 		var angle	= now*2 + position.y	 * 10;
 		position.x	= origin.x + Math.cos(angle)*0.1;
