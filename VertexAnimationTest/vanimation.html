@@ -38,11 +38,10 @@ renderer.autoClearColor = false;
 				};
 				
 				// model
-				var loader = new THREE.OBJLoader( manager );
+				var loader = new THREE.OBJLoader;
 				loader.load( './vanimation_files/globmeshtest.OBJ', function ( object ) );
 					object.position.y = - 80;
 					scene.add( object );
-				}, onProgress, onError );
 
 
 
