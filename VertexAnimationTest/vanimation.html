@@ -18,10 +18,10 @@ renderer.autoClearColor = false;
 	///////////////////////////////////////////////////////////////////////////////////
 	//		create an mesh							//
 	//////////////////////////////////////////////////////////////////////////////////
-	/*var geometry	= new THREE.TorusKnotGeometry(1-0.25, 0.25, 32*8, 32);
+	var geometry	= new THREE.TorusKnotGeometry(1-0.25, 0.25, 32*8, 32);
 	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
-	scene.add( mesh );*/
+	scene.add( mesh );
 	// texture
 				var manager = new THREE.LoadingManager();
 				manager.onProgress = function ( item, loaded, total ) {
@@ -55,7 +55,7 @@ renderer.autoClearColor = false;
 	//		Do a vertex animation on this mesh				//
 	//////////////////////////////////////////////////////////////////////////////////
 
-	/* instanciate the animation object
+	 instanciate the animation object
 	var animation	= new THREEx.VertexAnimation( object , function(origin, position, delta, now){
 		// here you put your formula, something clever which fit your needs
 		var angle	= now*2 + position.y	 * 10;
