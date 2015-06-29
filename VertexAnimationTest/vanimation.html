@@ -26,33 +26,8 @@ renderer.autoClearColor = false;
 	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
 	scene.add( mesh );
-	// texture
-				var manager = new THREE.LoadingManager();
-				manager.onProgress = function ( item, loaded, total ) {
-					console.log( item, loaded, total );
-				};
-				var texture = new THREE.Texture();
-				var onProgress = function ( xhr ) {
-					if ( xhr.lengthComputable ) {
-						var percentComplete = xhr.loaded / xhr.total * 100;
-						console.log( Math.round(percentComplete, 2) + '% downloaded' );
-					}
-				};
-				var onError = function ( xhr ) {
-				};
 
-				//model
-				var loader = new THREE.OBJLoader;
-
-				loader.load(
-					"./vanimation_files/globmeshtest.OBJ",
-					function ( geometry, materials ) {
-						var material = new THREE.MeshFaceMaterial( materials );
-						var object = new THREE.Mesh( geometry, material );
-						scene.add( object );
-					}
-				);
-
+	loader.load('./vanimation_files/globmeshtest.OBJ', function(object){ scene.add(object)}
 
 
 	//////////////////////////////////////////////////////////////////////////////////
