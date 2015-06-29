@@ -10,7 +10,7 @@ renderer.autoClearColor = false;
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	document.body.appendChild( renderer.domElement );
 
-	var updateFcts	= [];
+	//var updateFcts	= [];
 	var scene	= new THREE.Scene();
 	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100 );
 	camera.position.z = 3;
@@ -39,9 +39,9 @@ renderer.autoClearColor = false;
 
 				//model
 				var loader = new THREE.OBJLoader;
-				loader.load( 
-					"./vanimation_files/globmeshtest.OBJ", 
-					function (object) 
+				loader.load(
+					"./vanimation_files/globmeshtest.OBJ",
+					function (object)
 					scene.add( object );
 					);
 
