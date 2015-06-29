@@ -16,10 +16,57 @@ renderer.autoClearColor = false;
 	//////////////////////////////////////////////////////////////////////////////////
 	//		create an mesh							//
 	//////////////////////////////////////////////////////////////////////////////////
-	var geometry	= new THREE.TorusKnotGeometry(1-0.25, 0.25, 32*8, 32);
+	/*var geometry	= new THREE.TorusKnotGeometry(1-0.25, 0.25, 32*8, 32);
 	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
-	scene.add( mesh );
+	scene.add( mesh );*/
+
+
+                var manager = new THREE.LoadingManager();
+    			manager.onProgress = function ( item, loaded, total ) {
+
+					console.log( item, loaded, total );
+
+				};
+				var loader = new THREE.OBJLoader( manager );
+				loader.load( 'vanimation_files/globmeshtest.OBJ', function ( object ) {
+        var loader = new THREE.ImageLoader( manager );
+        loader.load( 'vanimation_files/random.jpg', function ( image ) {
+
+          texture.image = image;
+          texture.needsUpdate = true;
+
+        } );
+
+					object.traverse( function ( child ) {
+
+						if ( child instanceof THREE.Mesh ) {
+
+							console.log(child.material);
+                            //var m = child.material;
+                            //console.log('1', JSON.stringify(m));
+                            child.material = new THREE.MeshPhongMaterial( {
+    				color: 0xFFFFFF,
+					specular: 0xFFDAFF,
+					shininess: 100,
+					map: texture,
+					normalMap: mapHeight,
+
+					wrapRGB: new THREE.Vector3( 0.575, 0.5, 0.5 ),
+					wrapAround: true
+
+
+				} );
+                            //child.material.map = texture;
+                         //child.material.normalMap = normal;
+
+    }
+  });
+
+					object.position.y = 20;
+                    object.scale.set(52,52,52)
+                    object.rotation.y = -40
+					scene.add( object );
 
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -27,7 +74,7 @@ renderer.autoClearColor = false;
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// instanciate the animation object
-	var animation	= new THREEx.VertexAnimation(geometry, function(origin, position, delta, now){
+	var animation	= new THREEx.VertexAnimation(object, function(origin, position, delta, now){
 		// here you put your formula, something clever which fit your needs
 		var angle	= now*2 + position.y	 * 10;
 		position.x	= origin.x + Math.cos(angle)*0.1;
