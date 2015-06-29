@@ -11,7 +11,7 @@ renderer.autoClearColor = false;
 	document.body.appendChild( renderer.domElement );
 
 	var updateFcts	= [];
-	
+	var scene	= new THREE.Scene();
 	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100 );
 	camera.position.z = 3;
 
@@ -22,14 +22,7 @@ renderer.autoClearColor = false;
 	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
 	scene.add( mesh );*/
-	// scene
-				scene = new THREE.Scene();
-				var ambient = new THREE.AmbientLight( 0x101030 );
-				scene.add( ambient );
-				var directionalLight = new THREE.DirectionalLight( 0xffeedd );
-				directionalLight.position.set( 0, 0, 1 );
-				scene.add( directionalLight );
-				// texture
+	// texture
 				var manager = new THREE.LoadingManager();
 				manager.onProgress = function ( item, loaded, total ) {
 					console.log( item, loaded, total );
@@ -43,22 +36,12 @@ renderer.autoClearColor = false;
 				};
 				var onError = function ( xhr ) {
 				};
-				var loader = new THREE.ImageLoader( manager );
-				loader.load( 'textures/UV_Grid_Sm.jpg', function ( image ) {
-					texture.image = image;
-					texture.needsUpdate = true;
-				} );
-				// model
-				var loader = new THREE.OBJLoader( manager );
-				loader.load( 'obj/male02/male02.obj', function ( object ) {
-					object.traverse( function ( child ) {
-						if ( child instanceof THREE.Mesh ) {
-							child.material.map = texture;
-						}
-					} );
-					object.position.y = - 80;
+
+				//model
+				var loader = new THREE.OBJLoader;
+				loader.load( "./vanimation_files/globmeshtest.OBJ", function (object) );
+
 					scene.add( object );
-				}, onProgress, onError );
 
 
 
