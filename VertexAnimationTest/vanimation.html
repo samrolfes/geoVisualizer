@@ -19,6 +19,7 @@ renderer.autoClearColor = false;
 	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100 );
 	camera.position.z = 3;
 
+
 	///////////////////////////////////////////////////////////////////////////////////
 	//		create an mesh							//
 	//////////////////////////////////////////////////////////////////////////////////
@@ -27,8 +28,15 @@ renderer.autoClearColor = false;
 	var mesh	= new THREE.Mesh( geometry, material );
 	scene.add( mesh );
 
-	loader.load('./vanimation_files/globmeshtest.OBJ', function(object){ scene.add(object)}
+	var loader = new THREE.OBJLoader( manager );
+        loader.load('./vanimation_files/globmeshtest.OBJ', function( object ) {
 
+        object.traverse( function ( child ) {
+            if ( child instanceof THREE.Mesh ) {
+                child.material.map = texture;
+            }
+            scene.add(object);
+        });
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Do a vertex animation on this mesh				//
