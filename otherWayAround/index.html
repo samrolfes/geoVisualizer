@@ -62,6 +62,21 @@
                flashlight.position.set(0,0,.5);
                flashlight.target = camera;
 
+							//panorama sphere
+				var geometry = new THREE.SphereGeometry( 500, 60, 40 );
+				geometry.applyMatrix( new THREE.Matrix4().makeScale( -1, 1, 1 ) );
+
+
+				var material = new THREE.MeshBasicMaterial( {
+					map: THREE.ImageUtils.loadTexture( 'images/PANOscreen2.jpg' )
+				} );
+
+				mesh = new THREE.Mesh( geometry, material );
+                mesh.rotation.y = 15
+
+
+				scene.add( mesh );
+
 
                 //Teengirl obj texture
                 var manager = new THREE.LoadingManager();
