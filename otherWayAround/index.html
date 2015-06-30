@@ -1,20 +1,7 @@
 <!DOCTYPE html> 
 <html lang="en">
 <head>
-<!--         .
-     .  _/_     ____        ___  .___    ___  ,  _  /        ,    .    ___
-     \   |     (          .'   ` /   \ .'   ` |  |  |        |    `   /   `
-     |   |     `--.       |      |   ' |----' `  ^  '        |    |  |    |
- /`  |   \__/ \___.'       `._.' /     `.___,  \/ \/  ,       `---|. `.__/|
- \___/`                                               /       \___/
- ,__              /
- /  ` ,   . _  .- |
- |__  |   |  \,'  |   Come out and hang on the 26th!
- |    |   |  /\   |                     ❤❤❤ Sam
- |    `._/| /  \  `
- /                '
- ~~~~~SHOUTOUT JOSEPH YOLK CHIOCCHI FOR GETTIN THIS SHIT FIGURED OUT~~~~~~~~
--->
+
 	<meta charset="UTF-8&quot;" />
 	<title>TEENGIRL❤VISUALS❤MORE❤JUN26</title>
 	<meta charset="utf-8" />
@@ -134,15 +121,7 @@ Visuals:<br>
                flashlight.position.set(0,0,.5);
                flashlight.target = camera;
 				
-                //panorama sphere
-				var geometry = new THREE.SphereGeometry( 500, 60, 40 );
-				geometry.applyMatrix( new THREE.Matrix4().makeScale( -1, 1, 1 ) );
-				var material = new THREE.MeshBasicMaterial( {
-					map: THREE.ImageUtils.loadTexture( 'images/PANOscreen2.jpg' )
-				} );
-				mesh = new THREE.Mesh( geometry, material );
-                mesh.rotation.y = 15
-				scene.add( mesh );
+                
                 //Teengirl obj texture
                 var manager = new THREE.LoadingManager();
     			manager.onProgress = function ( item, loaded, total ) {
