@@ -11,19 +11,18 @@ for(var x = 0; x < 30; x += 2) {
 	var j = 0;
 	cubes[i] = new Array();
 	for(var y = 0; y < 30; y += 2) {
-		var geometry = new THREE.CubeGeometry(1.5, 1.5, 1.5);
-		
+		var geometry = new THREE.SphereGeometry( 1.5, 1.5, 1.5 );
 		var material = new THREE.MeshPhongMaterial({
 			color: randomFairColor(),
 			ambient: 0x808080,
 			specular: 0xffffff,
 			shininess: 20,
-			reflectivity: 5.5 
+			reflectivity: 5.5
 		});
-		
+
 		cubes[i][j] = new THREE.Mesh(geometry, material);
 		cubes[i][j].position = new THREE.Vector3(x, y, 0);
-		
+
 		scene.add(cubes[i][j]);
 		j++;
 	}
