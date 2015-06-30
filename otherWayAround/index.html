@@ -24,63 +24,40 @@
 
 
             <script>
-
             var camera, scene, renderer;
             var particles, i, h, color, sprite, size;
-
-
             //new:
             var directionalLight, directionalLight2, pointLight, ambientLight, spotLight;
-
-
 			var isUserInteracting = false,
 			onMouseDownMouseX = 0, onMouseDownMouseY = 0,
 			lon = 0, onMouseDownLon = 0,
 			lat = 0, onMouseDownLat = 0,
 			phi = 0, theta = 0;
-
 			init();
 			animate();
-
 			function init() {
-
 				var container, mesh;
-
 				container = document.getElementById( 'container' );
-
 				camera = new THREE.PerspectiveCamera( 85, window.innerWidth / window.innerHeight, 1, 1100 );
 				camera.target = new THREE.Vector3( 0, 0, 0 );
-
 				scene = new THREE.Scene();
-
-
                 // LIGHTS......?
-
-
-
                 var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
                  directionalLight.position.set( 0, 0, 0 );
                 scene.add( directionalLight );
-
                 pointLight = new THREE.PointLight( 0xffffff, 1, 800 );
     			pointLight.color.setHSL( 0.05, 1, 0.95 );
 				pointLight.position.set( 0, 0, 600 );
-
 				scene.add( pointLight );
-
-
                 directionalLight2 = new THREE.DirectionalLight( 0xD6EBFF,.4 );
     			directionalLight2.position.set( 1, -0.5, -1 );
 				directionalLight2.color.setHSL( 0.08, 1, 0.825 );
 				scene.add( directionalLight2 );
-
                var flashlight = new THREE.SpotLight(0xffffff,4,40);
                camera.add(flashlight);
                flashlight.position.set(0,0,.5);
                flashlight.target = camera;
-               
-               
-               //sprite
+				//sprite
                 var spriteGeometry = new THREE.Geometry();
                 sprite = THREE.ImageUtils.loadTexture( "images/tgf2.png" );
                 for ( i = 0; i < 2000; i ++ ) {
@@ -109,61 +86,38 @@
 				mesh = new THREE.Mesh( geometry, material );
                 mesh.rotation.y = 15
 				scene.add( mesh );
-
-                
-
-
                 //Teengirl obj texture
-
                 var manager = new THREE.LoadingManager();
     			manager.onProgress = function ( item, loaded, total ) {
-
 					console.log( item, loaded, total );
-
 				};
-
                 //normal map
                 var mapHeight = THREE.ImageUtils.loadTexture( "images/teengirlSkin_ZSphere_2-NM_u0_v2.jpg" );
-
     			mapHeight.anisotropy = 4;
 				mapHeight.repeat.set( 0.998, 0.998 );
 				mapHeight.offset.set( 0.001, 0.001 )
 				mapHeight.wrapS = mapHeight.wrapT = THREE.RepeatWrapping;
 				mapHeight.format = THREE.RGBFormat;
-
                 //
-
-
 				var texture = new THREE.Texture();
-
 				var onProgress = function ( xhr ) {
 					if ( xhr.lengthComputable ) {
 						var percentComplete = xhr.loaded / xhr.total * 100;
 						console.log( Math.round(percentComplete, 2) + '% downloaded' );
 					}
 				};
-
 				var onError = function ( xhr ) {
 				};
-
-
-
 				// Teengirl obj model
-
 				var loader = new THREE.OBJLoader( manager );
 				loader.load( 'objects/teengirl3.OBJ', function ( object ) {
         var loader = new THREE.ImageLoader( manager );
         loader.load( 'images/teengirl3.jpg', function ( image ) {
-
           texture.image = image;
           texture.needsUpdate = true;
-
         } );
-
 					object.traverse( function ( child ) {
-
 						if ( child instanceof THREE.Mesh ) {
-
 							console.log(child.material);
                             //var m = child.material;
                             //console.log('1', JSON.stringify(m));
@@ -173,18 +127,13 @@
 					shininess: 100,
 					map: texture,
 					normalMap: mapHeight,
-
 					wrapRGB: new THREE.Vector3( 0.575, 0.5, 0.5 ),
 					wrapAround: true
-
-
 				} );
                             //child.material.map = texture;
                          //child.material.normalMap = normal;
-
     }
   });
-
 					object.position.y = 20;
                     object.scale.set(52,52,52)
                     object.rotation.y = -40
@@ -193,172 +142,96 @@
                  directionalLight.position.set( 0, 0, 0 );
           scene.add( light );
 				}, onProgress, onError );
-
 				//
-
                 //renderer
-
 				renderer = new THREE.WebGLRenderer();
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer.domElement );
-
 				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 				document.addEventListener( 'mouseup', onDocumentMouseUp, false );
 				document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
 				document.addEventListener( 'DOMMouseScroll', onDocumentMouseWheel, false);
-
 				//
-
 				document.addEventListener( 'dragover', function ( event ) {
-
 					event.preventDefault();
 					event.dataTransfer.dropEffect = 'copy';
-
 				}, false );
-
 				document.addEventListener( 'dragenter', function ( event ) {
-
 					document.body.style.opacity = 0.5;
-
 				}, false );
-
 				document.addEventListener( 'dragleave', function ( event ) {
-
 					document.body.style.opacity = 1;
-
 				}, false );
-
 				document.addEventListener( 'drop', function ( event ) {
-
 					event.preventDefault();
-
 					var reader = new FileReader();
 					reader.addEventListener( 'load', function ( event ) {
-
 						material.map.image.src = event.target.result;
 						material.map.needsUpdate = true;
-
 					}, false );
 					reader.readAsDataURL( event.dataTransfer.files[ 0 ] );
-
 					document.body.style.opacity = 1;
-
 				}, false );
-
 				//
-
 				window.addEventListener( 'resize', onWindowResize, false );
-
 			}
-
-
-
 			function onWindowResize() {
-
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
-
 				renderer.setSize( window.innerWidth, window.innerHeight );
-
 			}
-
 			function onDocumentMouseDown( event ) {
-
 				event.preventDefault();
-
 				isUserInteracting = true;
-
 				onPointerDownPointerX = event.clientX;
 				onPointerDownPointerY = event.clientY;
-
 				onPointerDownLon = lon;
 				onPointerDownLat = lat;
-
 			}
-
 			function onDocumentMouseMove( event ) {
-
 				if ( isUserInteracting === true ) {
-
 					lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
 					lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
-
 				}
-
 			}
-
 			function onDocumentMouseUp( event ) {
-
 				isUserInteracting = false;
-
 			}
-
 			function onDocumentMouseWheel( event ) {
-
 				// WebKit
-
 				if ( event.wheelDeltaY ) {
-
 					camera.fov -= event.wheelDeltaY * 0.05;
-
 				// Opera / Explorer 9
-
 				} else if ( event.wheelDelta ) {
-
 					camera.fov -= event.wheelDelta * 0.05;
-
 				// Firefox
-
 				} else if ( event.detail ) {
-
 					camera.fov += event.detail * 1.0;
-
 				}
-
 				camera.updateProjectionMatrix();
-
 			}
-
 			function animate() {
-
 				requestAnimationFrame( animate );
 				update();
-
-
 			}
-
 			function update() {
-
 				if ( isUserInteracting === false ) {
-
 					lon += 0.1;
-
 				}
-
-
 				lat = Math.max( - 85, Math.min( 85, lat ) );
 				phi = THREE.Math.degToRad( 90 - lat );
 				theta = THREE.Math.degToRad( lon );
-
                 var time = Date.now() * 0.00005;
-
 				camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
 				camera.target.y = 500 * Math.cos( phi );
 				camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
-
 				camera.lookAt( camera.target );
-
-
 				// distortion
 				camera.position.copy( camera.target ).negate();
 				h = ( 360 * ( 2.0 + time ) % 360 ) / 360;
     			spriteMaterial.color.setHSL( h, 0.7, 0.7 );
-
-
 				renderer.render( scene, camera );
-
 			}
-
 		</script></body>
 </html>
