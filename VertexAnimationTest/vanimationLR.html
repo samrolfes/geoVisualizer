@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!-- saved from url=(0073)http://jeromeetienne.github.io/threex.vertexanimation/examples/basic.html -->
+<html><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src='vendor/three.js/build/three.js'></script>
+	<script src="http://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+	<script src="./vanimation_files/OBJLoader.js"></script>
+<script src="./vanimation_files/threex.vertexanimation.js"></script>
+
+
+</head><body style="margin: 0px; background-color: #bbbbbb; overflow: hidden;"><script>
+renderer = new THREE.WebGLRenderer( { preserveDrawingBuffer: true } );
+renderer.autoClearColor = false;
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	document.body.appendChild( renderer.domElement );
+
+	var updateFcts	= [];
+	var scene	= new THREE.Scene();
+	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100 );
+	camera.position.z = 3;
+
+
+	///////////////////////////////////////////////////////////////////////////////////
+	//		create an mesh							//
+	//////////////////////////////////////////////////////////////////////////////////
+	var geometry	= new THREE.TorusKnotGeometry(1-0.25, 0.25, 32*8, 32);
+	var material	= new THREE.MeshNormalMaterial();
+	var mesh	= new THREE.Mesh( geometry, material );
+	scene.add( mesh );
+
+	var loader = new THREE.OBJLoader( manager );
+        loader.load('./vanimation_files/globmeshtest.OBJ', function( object ) {
+
+        object.traverse( function ( child ) {
+            if ( child instanceof THREE.Mesh ) {
+                child.material.map = texture;
+            }
+            scene.add(object);
+        });
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Do a vertex animation on this mesh				//
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// instanciate the animation object
+	var animation	= new THREEx.VertexAnimation( geometry , function(origin, position, delta, now){
+		// here you put your formula, something clever which fit your needs
+		var angle	= now*2 + position.y	 * 10;
+		position.x	= origin.x + Math.cos(angle)*0.1;
+	})
+	// update the animation at every frame
+	updateFcts.push(function(delta, now){
+		animation.update(delta, now)
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Camera Controls							//
+	//////////////////////////////////////////////////////////////////////////////////
+	var mouse	= {x : 0, y : 0}
+	document.addEventListener('mousemove', function(event){
+		mouse.x	= (event.clientX / window.innerWidth ) - 0.5
+		mouse.y	= (event.clientY / window.innerHeight) - 0.5
+	}, false)
+	updateFcts.push(function(delta, now){
+		camera.position.x += (mouse.x*5 - camera.position.x) * (delta*3)
+		camera.position.y += (mouse.y*5 - camera.position.y) * (delta*3)
+		camera.lookAt( scene.position )
+	})
+
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the scene						//
+	//////////////////////////////////////////////////////////////////////////////////
+	updateFcts.push(function(){
+		renderer.render( scene, camera );
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		loop runner							//
+	//////////////////////////////////////////////////////////////////////////////////
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		updateFcts.forEach(function(updateFn){
+			updateFn(deltaMsec/1000, nowMsec/1000)
+		})
+	})
+
+</script><canvas width="2872" height="1056" style="width: 1436px; height: 528px;"></canvas>
+<script type="text/javascript">(function () {
+        return window.SIG_EXT = {};
+      })()</script></body></html>
