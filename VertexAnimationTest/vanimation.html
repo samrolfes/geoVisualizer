@@ -28,15 +28,19 @@ renderer.autoClearColor = false;
 	var mesh	= new THREE.Mesh( geometry, material );
 	scene.add( mesh );
 
-	var loader = new THREE.OBJLoader( manager );
-        loader.load('./vanimation_files/globmeshtest.OBJ', function( object ) {
+	var manager = new THREE.LoadingManager();
+manager.onProgress = function ( item, loaded, total ) {
+console.log( item, loaded, total );
+};
 
-        object.traverse( function ( child ) {
-            if ( child instanceof THREE.Mesh ) {
-                child.material.map = texture;
-            }
-            scene.add(object);
-        });
+
+var loader = new THREE.OBJLoader( manager );
+       loader.load('./vanimation_files/globmeshtest.OBJ', function( object ) {
+       object.traverse( function ( child ) {
+   	       if ( child instanceof THREE.Mesh ) {child.material.map = texture; }
+           scene.add(object);
+       	});
+});
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Do a vertex animation on this mesh				//
