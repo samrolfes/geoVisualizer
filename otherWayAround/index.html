@@ -102,7 +102,6 @@ Visuals:<br>
 
             <script>
             var camera, scene, renderer;
-            var particles, i, h, color, sprite, size;
             //new:
             var directionalLight, directionalLight2, pointLight, ambientLight, spotLight;
 			var isUserInteracting = false,
@@ -288,7 +287,6 @@ Visuals:<br>
 				// distortion
 				camera.position.copy( camera.target ).negate();
 				h = ( 360 * ( 2.0 + time ) % 360 ) / 360;
-    			spriteMaterial.color.setHSL( h, 0.7, 0.7 );
 				renderer.render( scene, camera );
 			}
 		</script></body>
