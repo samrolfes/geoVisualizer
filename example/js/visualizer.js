@@ -68,9 +68,10 @@ var render = function () {
 
 		for(var j = 0; j < cubes[i].length; j++) {
 
-				var scale = (array[k] + boost) / 15;
+				var scale = (array[k] + boost) / 60;
 				cubes[i][j].scale.z = (scale < 1 ? 1 : scale);
 				cubes[i][j].scale.x = (scale < 1 ? 1 : scale);
+				cubes[i][j].scale.y = (scale < 1 ? 1 : scale);
 
 				k += (k < array.length ? 1 : 0);
 			}
