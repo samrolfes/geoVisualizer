@@ -7,10 +7,10 @@ var controls;
 document.body.appendChild(renderer.domElement);
 
 var i = 0;
-for(var x = 0; x < 30; x += 2) {
+for(var x = 0; x < 15; x += 2) {
 	var j = 0;
 	cubes[i] = new Array();
-	for(var y = 0; y < 30; y += 2) {
+	for(var y = 0; y < 15; y += 2) {
 		var geometry = new THREE.SphereGeometry( 1.5, 1.5, 1.5 );
 		var material = new THREE.MeshPhongMaterial({
 			color: randomFairColor(),
