@@ -63,17 +63,15 @@ var render = function () {
 
 	if(typeof array === 'object' && array.length > 0) {
 		var k = 0;
-		var everyother = 0;
+
 		for(var i = 0; i < cubes.length; i++) {
 
 		for(var j = 0; j < cubes[i].length; j++) {
-				if(everyother > 1){everyother/2;}
-				var scale = (array[k] + boost) / 15;
-				var scale2 = (array[k] + boost)/2;
-				cubes[i][j].scale.z = (scale < 1 ? 1 : scale);
 
-				cubes[i][j].scale.x = (scale2 < 1 ? .5: scale2);
-				everyother += j;
+				var scale = (array[k] + boost) / 15;
+				cubes[i][j].scale.z = (scale < 1 ? 1 : scale);
+				cubes[i][j].scale.x = (scale < 1 ? 1 : scale);
+
 				k += (k < array.length ? 1 : 0);
 			}
 		}
