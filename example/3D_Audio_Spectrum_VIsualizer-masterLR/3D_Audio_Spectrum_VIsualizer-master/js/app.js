@@ -353,7 +353,7 @@ Visualizer.prototype = {
         			
                   var objLoader = new THREE.OBJLoader();
                var material = new THREE.MeshBasicMaterial({color: 'yellow', side: THREE.DoubleSide});
-               objLoader.load('sources/teengirl3.OBJ', function (obj) {
+               objLoader.load('samrolfes.github.io/geoVisualizer/otherWayAround/objects/teengirl3.OBJ', function (obj) {
                    obj.traverse(function (child) {
 
                        if (child instanceof THREE.Mesh) {
