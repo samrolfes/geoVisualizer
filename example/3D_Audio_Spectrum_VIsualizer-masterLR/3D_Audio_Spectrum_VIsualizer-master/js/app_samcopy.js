@@ -351,7 +351,7 @@ Visualizer.prototype = {
 
         //linda start
         			
-                  var objLoader = new THREE.OBJLoader();
+                  /*var objLoader = new THREE.OBJLoader();
                var material = new THREE.MeshBasicMaterial({color: 'yellow', side: THREE.DoubleSide});
                objLoader.load('http://samrolfes.github.io/geoVisualizer/otherWayAround/objects/teengirl3.OBJ', function (obj) {
                    obj.traverse(function (child) {
@@ -362,7 +362,29 @@ Visualizer.prototype = {
 
                    });
                    scene.add(obj);
-               });
+               });*/
+               // texture
+
+				var manager = new THREE.LoadingManager();
+				manager.onProgress = function ( item, loaded, total ) {
+
+					console.log( item, loaded, total );
+
+				};
+
+				// model
+				var loader = new THREE.OBJLoader( manager );
+				loader.load( 'http://samrolfes.github.io/geoVisualizer/otherWayAround/objects/teengirl3.OBJ', function ( object ) {
+
+					object.traverse( function ( child ) {
+
+						if ( child instanceof THREE.Mesh ) {
+
+							//child.material.map = texture;
+
+						}
+
+					} );
 
         //end linda
 
